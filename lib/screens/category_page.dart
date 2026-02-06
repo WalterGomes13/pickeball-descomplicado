@@ -1,32 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'common/button.dart';
+import '../widgets/buttons/button.dart';
+
+import 'package:pickleball_descomp_flutter/providers/category_state.dart';
 
 const List<Widget> categorias = <Widget>[Text('Simples'), Text('Dupla')];
 
-class categoryState extends ChangeNotifier{
-  int? _categoriaSelecionada;
-
-  int? get categoriaSelecionada => _categoriaSelecionada;
-
-  void escolherCategoria(int categoria){
-    _categoriaSelecionada = categoria;
-    notifyListeners();
-  }
-}
-
-class categoryPage extends StatefulWidget{
+class categoryPage extends StatelessWidget{
   const categoryPage({super.key});
 
   @override
-  State<categoryPage> createState() => _categoryPageState();
-}
-
-class _categoryPageState extends State<categoryPage>{
-  final List<bool> categoriasEscolhidas = <bool>[true, false];
-
-  @override
   Widget build(BuildContext context){
+    final categoria = context.select<CategoryState, int?>((c)=>c.categoriaSelecionada);
+    final List<bool> categoriasEscolhidas = <bool>[categoria == 1, categoria == 2];
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -46,11 +33,11 @@ class _categoryPageState extends State<categoryPage>{
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.white
                     ),
-                    child: Column(// descobrir pq está errado
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Categoria', style: Theme.of(context).textTheme.bodyMedium),
+                        Text('Categoria', style: Theme.of(context).textTheme.bodySmall),
                         LayoutBuilder(
                           builder: (BuildContext context, BoxConstraints constraints){
                             final width = constraints.maxWidth ;
@@ -63,11 +50,7 @@ class _categoryPageState extends State<categoryPage>{
                               child: ToggleButtons(
                                 direction: Axis.horizontal,
                                 onPressed: (int index){
-                                  setState(() {
-                                    for (int i = 0; i < categoriasEscolhidas.length; i++){
-                                      categoriasEscolhidas[i] = i == index;
-                                    }
-                                  });
+                                  context.read<CategoryState>().escolherCategoria(index + 1);
                                 },
                                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                                 selectedColor: Colors.white,
@@ -90,7 +73,7 @@ class _categoryPageState extends State<categoryPage>{
             mainButton(enabled: true, 
               texto: 'PRÓXIMO', 
               rota: '/modoJogo', 
-              formFunction: () => context.read<categoryState>().escolherCategoria(categoriasEscolhidas[0] ? 1 : 2),
+              formFunction: null,
             )
           ],
         ),

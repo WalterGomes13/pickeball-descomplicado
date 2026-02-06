@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'common/button.dart';
+import '../widgets/buttons/button.dart';
 
 class enterPage extends StatelessWidget{
   const enterPage({super.key});

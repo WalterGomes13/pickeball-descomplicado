@@ -1,32 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'common/button.dart';
+import '../widgets/buttons/button.dart';
+
+import 'package:pickleball_descomp_flutter/providers/game_mode_state.dart';
 
 const List<Widget> modosJogo = <Widget>[Text('0-0-2'), Text('Rally Score')];
 
-class gameState extends ChangeNotifier{
-  int? _modoSelecionado;
-
-  int? get modoSelecionado => _modoSelecionado;
-
-  void escolherModo(int modo){
-    _modoSelecionado = modo;
-    notifyListeners();
-  }
-}
-
-class gameModePage extends StatefulWidget{
-  const gameModePage({super.key});
-
-  @override
-  State<gameModePage> createState() => _gameModePageState();
-}
-
-class _gameModePageState extends State<gameModePage>{
-  final List<bool> modosEscolhidos = <bool>[true, false];
+class GameModePage extends StatelessWidget{
+  const GameModePage({super.key});
 
   @override
   Widget build(BuildContext context){
+    final modo = context.select<GameModeState, int?>((g)=>g.modoSelecionado);
+    final List<bool> modosEscolhidos = <bool>[modo == 1, modo == 2];
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -50,7 +37,7 @@ class _gameModePageState extends State<gameModePage>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Modo de jogo', style: Theme.of(context).textTheme.bodyMedium),
+                        Text('Modo de jogo', style: Theme.of(context).textTheme.bodySmall),
                         LayoutBuilder(
                           builder: (BuildContext context, BoxConstraints constraints){
                             final width = constraints.maxWidth ;
@@ -63,11 +50,7 @@ class _gameModePageState extends State<gameModePage>{
                               child: ToggleButtons(
                                 direction: Axis.horizontal,
                                 onPressed: (int index){
-                                  setState(() {
-                                    for (int i = 0; i < modosEscolhidos.length; i++){
-                                      modosEscolhidos[i] = i == index;
-                                    }
-                                  });
+                                  context.read<GameModeState>().escolherModo(index + 1);
                                 },
                                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                                 selectedColor: Colors.white,
@@ -90,7 +73,7 @@ class _gameModePageState extends State<gameModePage>{
             mainButton(enabled: true, 
               texto: 'PRÓXIMO', 
               rota: '/nomes', 
-              formFunction: () => context.read<gameState>().escolherModo(modosEscolhidos[0] ? 1 : 2),
+              formFunction: null,
             )
           ],
         ),
