@@ -11,6 +11,34 @@ class RallyScore extends Jogo{
   final bool? freezePoint;
 
   @override
+  Jogo copy(){
+    RallyScore rallyScore = RallyScore(categoriaJogo: categoriaJogo, jogadores: jogadores, maxPont: maxPont, freezePoint: freezePoint);
+    rallyScore.times = times.map((t)=>t.copy()).toList();
+    rallyScore.timeVencedor = timeVencedor?.copy();
+
+    return rallyScore;
+  }
+
+  @override
+  bool existeVencedor(Time timePontuador, Time outroTime){
+    if (timePontuador.getPontuacao < maxPont){return false;}
+    if (timePontuador.getPontuacao - outroTime.getPontuacao >=2){
+      if (freezePoint!){
+        bool situacaoJogo = (timePontuador.getSituacao == SituacaoJogo.atacando)? true : false;
+        if (situacaoJogo) timeVencedor = timePontuador;
+        return situacaoJogo;
+      } else {
+        timeVencedor = timePontuador;
+        return true;
+      }
+    } else {
+      maxPont+=1;
+      return false;
+    }
+
+  }
+
+  @override
   void tomadaDeSaque(Time novoTimeSacador, Time antigoTimeSacador){
     trocarLadoDefesa(novoTimeSacador);
     novoTimeSacador.setSituacao(SituacaoJogo.atacando);
@@ -38,9 +66,9 @@ class RallyScore extends Jogo{
   }
 
   @override
-  void pontuarJogo(Time timePontuador, Time outroTime){
+  bool pontuarJogo(Time timePontuador, Time outroTime){
     timePontuador.incrementarPontuacao();
-    if (existeVencedor(timePontuador, outroTime)){return;}
+    if (existeVencedor(timePontuador, outroTime)){return false;}
     if(timePontuador.isDupla){
       if(timePontuador.getSituacao == SituacaoJogo.atacando){
         trocarLadoSaque(timePontuador);
@@ -56,5 +84,7 @@ class RallyScore extends Jogo{
         tomadaDeSaque(timePontuador, outroTime);
       }
     }
+
+    return true;
   }
 }

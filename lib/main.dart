@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget{
       initialRoute: '/',
       routes: {
         '/': (_) => const enterPage(),
-        '/categoria':(_) => const categoryPage(),
+        '/categoria':(_) => const CategoryPage(),
         '/modoJogo':(_) => const GameModePage(),
         '/nomes':(_) => const NomesPage(),
         '/jogo':(_) => const GamePage()

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:pickleball_descomp_flutter/widgets/gameView/placar.dart';
 import 'package:pickleball_descomp_flutter/widgets/gameView/quadra.dart';
 import 'package:pickleball_descomp_flutter/widgets/gameView/buttons_pontuacao.dart';
+import 'package:pickleball_descomp_flutter/widgets/gameView/buttons_action.dart';
 
 import 'package:pickleball_descomp_flutter/providers/category_state.dart';
 import 'package:pickleball_descomp_flutter/providers/game_mode_state.dart';
@@ -22,7 +23,8 @@ class GamePage extends StatelessWidget{
 
     return ChangeNotifierProvider(
       create: (_) => GameState(category, mode, nome)..comecar(),
-        child: Scaffold(
+      child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 221, 221, 221),
         body: Center(
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints){
@@ -36,7 +38,8 @@ class GamePage extends StatelessWidget{
                     children: [
                       placar(context: context, width: width),
                       quadra(context: context, width: width),
-                      buttonsPontuacao(context: context, width: width)
+                      buttonsPontuacao(context: context, width: width),
+                      buttonsAction(context: context, width: width)
                     ],
                   )
                 )

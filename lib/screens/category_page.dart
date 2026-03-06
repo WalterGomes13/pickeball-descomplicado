@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../widgets/buttons/button.dart';
 
 import 'package:pickleball_descomp_flutter/providers/category_state.dart';
 
 const List<Widget> categorias = <Widget>[Text('Simples'), Text('Dupla')];
 
-class categoryPage extends StatelessWidget{
-  const categoryPage({super.key});
+class CategoryPage extends StatelessWidget{
+  const CategoryPage({super.key});
 
   @override
   Widget build(BuildContext context){
@@ -15,6 +16,14 @@ class categoryPage extends StatelessWidget{
     final List<bool> categoriasEscolhidas = <bool>[categoria == 1, categoria == 2];
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context), 
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onPrimary,
+          )),
+      ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

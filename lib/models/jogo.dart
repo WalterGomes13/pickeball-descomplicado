@@ -1,12 +1,8 @@
 import 'jogador.dart';
 
 enum LadoQuadra {
-  esquerdo(63),
-  direito(267);
-
-  final double axisX;
-
-  const LadoQuadra(this.axisX);
+  esquerdo,
+  direito;
 }
 
 enum EstadoJogador {
@@ -35,21 +31,21 @@ abstract class Jogo{
   final List<Jogador> jogadores;
   final List<JogadorEmJogo> jogadoresEmJogo;
   int maxPont;
-  List<Time>? times;
+  List<Time> times = [];
   Time? timeVencedor;
-  
+
+  Jogo copy();
+
   void comecarJogo() {
     if (categoriaJogo == 1){
       jogadoresEmJogo[0].definirJogador(LadoQuadra.direito, EstadoJogador.sacador);
       jogadoresEmJogo[1].definirJogador(LadoQuadra.direito, EstadoJogador.recebedor);
 
-      times = <Time>[
-        Time(jogador1: jogadoresEmJogo[0]), 
-        Time(jogador1: jogadoresEmJogo[1])
-      ];
+      times.add(Time(jogador1: jogadoresEmJogo[0]));
+      times.add(Time(jogador1: jogadoresEmJogo[1]));
 
-      times?[0].setSituacao(SituacaoJogo.atacando);
-      times?[1].setSituacao(SituacaoJogo.defendendo);
+      times[0].setSituacao(SituacaoJogo.atacando);
+      times[1].setSituacao(SituacaoJogo.defendendo);
 
     } else {
       jogadoresEmJogo[0].definirJogador(LadoQuadra.direito, EstadoJogador.sacador);
@@ -62,21 +58,12 @@ abstract class Jogo{
         Time(jogador1: jogadoresEmJogo[2], jogador2: jogadoresEmJogo[3])
       ];
 
-      times?[0].setSituacao(SituacaoJogo.atacando);
-      times?[1].setSituacao(SituacaoJogo.defendendo);
+      times[0].setSituacao(SituacaoJogo.atacando);
+      times[1].setSituacao(SituacaoJogo.defendendo);
     }
   }
 
-  bool existeVencedor(Time timePontuador, Time outroTime){
-    if (timePontuador.getPontuacao < maxPont){return false;}
-    if (timePontuador.getPontuacao - outroTime.getPontuacao >=2){
-      timeVencedor = timePontuador;
-      return true;
-    } else {
-      maxPont+=1;
-      return false;
-    }
-  }
+  bool existeVencedor(Time timePontuador, Time outroTime);
 
   void trocarLadoSaque(Time time){ //potuou e inverteu a posicao de ataque
     if (time.getSituacao != SituacaoJogo.atacando){return;}
@@ -118,7 +105,7 @@ abstract class Jogo{
 
   void tomadaDeSaque(Time novoTimeSacador, Time antigoTimeSacador);
 
-  void pontuarJogo(Time timePontuador, Time outroTime);
+  bool pontuarJogo(Time timePontuador, Time outroTime);
 }
 
 class Time{
@@ -135,10 +122,19 @@ class Time{
   void decrementarPontuacao() => pontuacao = (pontuacao > 0) ? pontuacao - 1: pontuacao;
 
   SituacaoJogo? get getSituacao => situacaoJogo;
-  void setSituacao(SituacaoJogo novaSituacao) => situacaoJogo = novaSituacao;
+  void setSituacao(SituacaoJogo? novaSituacao) => situacaoJogo = novaSituacao;
 
   int get getNSacador => nSacador;
   void setNSacador(int novoSacador) => nSacador = novoSacador;
+
+  Time copy(){
+    Time time = Time(jogador1: jogador1.copy(), jogador2: jogador2?.copy());
+    time.setSituacao(this.getSituacao);
+    time.setNSacador(this.getNSacador);
+    time.pontuacao = this.getPontuacao;
+
+    return time;
+  }
 }
 
 class JogadorEmJogo{
@@ -157,5 +153,13 @@ class JogadorEmJogo{
   void definirJogador(LadoQuadra novaLadoQuadra, EstadoJogador novoEstado){
     ladoQuadra = novaLadoQuadra;
     estadoJogador = novoEstado;
+  }
+
+  JogadorEmJogo copy(){
+    JogadorEmJogo jogadorEmJogo = JogadorEmJogo(jogador: jogador);
+    jogadorEmJogo.setLadoQuadra(getLadoQuadra);
+    jogadorEmJogo.setEstado(getEstadoJogador);
+
+    return jogadorEmJogo;
   }
 }

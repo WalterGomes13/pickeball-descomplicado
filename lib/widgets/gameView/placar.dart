@@ -36,7 +36,7 @@ Widget placar({
               Expanded(child: 
                 Consumer<GameState>(
                   builder: (BuildContext context, gameState, _){
-                    return Text('${gameState.jogo?.times?[0].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
+                    return Text('${gameState.jogo?.times[0].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
                   }
                 )
               )
@@ -88,7 +88,7 @@ Widget placar({
               Expanded(child: 
                 Consumer<GameState>(
                   builder: (BuildContext context, gameState, _){
-                    return Text('${gameState.jogo?.times?[0].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
+                    return Text('${gameState.jogo?.times[0].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
                   }
                 )
               )
@@ -110,7 +110,7 @@ Widget placar({
               Expanded(child: 
                 Consumer<GameState>(
                   builder: (BuildContext context, gameState, _){
-                    return Text('${gameState.jogo?.times?[1].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
+                    return Text('${gameState.jogo?.times[1].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
                   }
                 )
               )
@@ -162,7 +162,7 @@ Widget placar({
               Expanded(child: 
                 Consumer<GameState>(
                   builder: (BuildContext context, gameState, _){
-                    return Text('${gameState.jogo?.times?[1].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
+                    return Text('${gameState.jogo?.times[1].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
                   }
                 )
               )

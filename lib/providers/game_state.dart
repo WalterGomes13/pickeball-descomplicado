@@ -13,26 +13,45 @@ class GameState extends ChangeNotifier{
   final GameModeState gameModeState;
   final NomeState nomeState;
   Jogo? jogo;
-  List<TimePosicionado>? timesPosicionados;
+  List<TimePosicionado> timesPosicionados = [];
+  List<Jogada> jogadas = [];
 
   GameState(this.categoryState, this.gameModeState, this.nomeState);
   
   void comecar(){
     jogo = (gameModeState.modoSelecionado == 1) 
       ? ZeroDois(categoriaJogo: categoryState.categoriaSelecionada, jogadores: nomeState.jogadores, maxPont: 11)
-      : RallyScore(categoriaJogo: categoryState.categoriaSelecionada, jogadores: nomeState.jogadores, maxPont: 21, freezePoint: null);
+      : RallyScore(categoriaJogo: categoryState.categoriaSelecionada, jogadores: nomeState.jogadores, maxPont: gameModeState.maxPoint, freezePoint: gameModeState.freezePoint);
 
     jogo?.comecarJogo();
-    timesPosicionados = [
-      TimePosicionado(time: jogo?.times?[0]),
-      TimePosicionado(time: jogo?.times?[1])
-    ];
-    timesPosicionados?[0].setLadoQuadraVertical(LadoQuadraVertical.superior);
-    timesPosicionados?[1].setLadoQuadraVertical(LadoQuadraVertical.inferior);
+    timesPosicionados.add(TimePosicionado(time: jogo!.times[0]));
+    timesPosicionados.add(TimePosicionado(time: jogo!.times[1]));
+    
+    timesPosicionados[0].setLadoQuadraVertical(LadoQuadraVertical.superior);
+    timesPosicionados[1].setLadoQuadraVertical(LadoQuadraVertical.inferior);
+
+    jogadas.clear();
+    jogadas.add(Jogada(times: timesPosicionados.map((t)=>t.copy()).toList(), jogo: jogo!.copy()));
   }
 
   void pontuar(Time timePontuador, Time outroTime){
-    jogo?.pontuarJogo(timePontuador, outroTime);
+    jogadas.add(Jogada(times: timesPosicionados.map((t)=>t.copy()).toList(), jogo: jogo!.copy()));
+    if(!jogo!.pontuarJogo(timePontuador, outroTime)){
+      //botar algo pra dizer que ganhou o jogo
+    };
+    notifyListeners();
+  }
+
+  void desfazer(){
+    final jogada = jogadas.removeLast();
+    jogo = jogada.jogo.copy();
+    timesPosicionados = [
+      TimePosicionado(time: jogo!.times[0]),
+      TimePosicionado(time: jogo!.times[1]),
+    ];
+
+    timesPosicionados[0].setLadoQuadraVertical(jogada.times[0].getLadoQuadraVertical);
+    timesPosicionados[1].setLadoQuadraVertical(jogada.times[1].getLadoQuadraVertical);
     notifyListeners();
   }
 }
@@ -45,9 +64,23 @@ enum LadoQuadraVertical{
 class TimePosicionado{
   TimePosicionado({required this.time});
 
-  final Time? time;
-  LadoQuadraVertical? _ladoQuadraVertical;
+  final Time time;
 
+  LadoQuadraVertical? _ladoQuadraVertical;
   LadoQuadraVertical? get getLadoQuadraVertical => _ladoQuadraVertical;
   void setLadoQuadraVertical(LadoQuadraVertical? ladoQuadraVertical) => _ladoQuadraVertical = ladoQuadraVertical;
+
+  TimePosicionado copy(){
+    TimePosicionado timePosicionado = TimePosicionado(time: time.copy());
+    timePosicionado.setLadoQuadraVertical(getLadoQuadraVertical);
+
+    return timePosicionado;
+  }
+}
+
+class Jogada{
+  const Jogada({required this.times, required this.jogo});
+
+  final List<TimePosicionado> times;
+  final Jogo jogo;
 }

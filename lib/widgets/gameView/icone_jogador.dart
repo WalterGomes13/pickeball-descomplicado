@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:pickleball_descomp_flutter/models/jogador.dart';
+import 'package:pickleball_descomp_flutter/models/jogo.dart';
 
 Widget iconeJogador({
   required BuildContext context,
-  required Jogador? jogador,
+  required JogadorEmJogo? jogadorEmJogo,
   required Color cor
 }) {
   
@@ -13,18 +13,29 @@ Widget iconeJogador({
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      ClipOval(
-        child: Container(
-          width: 63,
-          height: 63,
-          color: cor,
-          child: Image(
-            image: AssetImage('assets/icone_jogador.png'),
-            fit: BoxFit.contain,
-          ),
-        ),
+      CircleAvatar(
+        radius: 31.5,
+        backgroundColor: cor,
+        child: Image.asset(
+          'assets/icone_jogador.png',
+          width: 57,
+          height: 57,
+        )
       ),
-      Text('${jogador?.nome?[0]}. ${jogador?.sobrenome}', style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 15))
+      if (jogadorEmJogo?.getEstadoJogador == EstadoJogador.sacador) 
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/raquete.png',
+              width: 18,
+              height: 20,
+            ),
+            Text('${jogadorEmJogo?.jogador.nome?[0]}. ${jogadorEmJogo?.jogador.sobrenome}', style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 15, color: Theme.of(context).colorScheme.onPrimary))
+          ],
+        )
+      else
+        Text('${jogadorEmJogo?.jogador.nome?[0]}. ${jogadorEmJogo?.jogador.sobrenome}', style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 15, color: Theme.of(context).colorScheme.onPrimary))
     ],
   );
 }

@@ -8,6 +8,27 @@ class ZeroDois extends Jogo{
   });
 
   @override
+  Jogo copy(){
+    ZeroDois zeroDois = ZeroDois(categoriaJogo: categoriaJogo, jogadores: jogadores, maxPont: maxPont);
+    zeroDois.times = times.map((t)=>t.copy()).toList();
+    zeroDois.timeVencedor = timeVencedor?.copy();
+
+    return zeroDois;
+  }
+
+  @override
+  bool existeVencedor(Time timePontuador, Time outroTime){
+    if (timePontuador.getPontuacao < maxPont){return false;}
+    if (timePontuador.getPontuacao - outroTime.getPontuacao >=2){
+      timeVencedor = timePontuador;
+      return true;
+    } else {
+      maxPont+=1;
+      return false;
+    }
+  }
+
+  @override
   void tomadaDeSaque(Time novoTimeSacador, Time antigoTimeSacador){
     novoTimeSacador.setSituacao(SituacaoJogo.atacando);
     antigoTimeSacador.setSituacao(SituacaoJogo.defendendo);
@@ -33,11 +54,11 @@ class ZeroDois extends Jogo{
   }
 
   @override
-  void pontuarJogo(Time timePontuador, Time outroTime){
+  bool pontuarJogo(Time timePontuador, Time outroTime){
     if (timePontuador.isDupla){
       if (timePontuador.getSituacao == SituacaoJogo.atacando){
         timePontuador.incrementarPontuacao();
-        if (existeVencedor(timePontuador, outroTime)){return;}
+        if (existeVencedor(timePontuador, outroTime)){return false;}
         trocarLadoSaque(timePontuador);
         mudarRecebedor(outroTime);
       } else {
@@ -53,12 +74,14 @@ class ZeroDois extends Jogo{
     } else {
       if (timePontuador.getSituacao == SituacaoJogo.atacando){
         timePontuador.incrementarPontuacao();
-        if (existeVencedor(timePontuador, outroTime)){return;}
+        if (existeVencedor(timePontuador, outroTime)){return false;}
         trocarLadoSaque(timePontuador);
         trocarLadoDefesa(outroTime);
       } else {
         tomadaDeSaque(timePontuador, outroTime);
       }
     }
+
+    return true;
   }
 }

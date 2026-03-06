@@ -12,9 +12,19 @@ class GameModePage extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     final modo = context.select<GameModeState, int?>((g)=>g.modoSelecionado);
+    final freezePoint = context.select<GameModeState, bool?>((f)=>f.freezePoint);
+    final maxPoint = context.select<GameModeState, int?>((m)=>m.maxPoint);
     final List<bool> modosEscolhidos = <bool>[modo == 1, modo == 2];
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context), 
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onPrimary,
+          )),
+      ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -26,14 +36,14 @@ class GameModePage extends StatelessWidget{
 
                 return SizedBox(
                   width: width ,
-                  height: width * (158/300),
+                  height: (modo==1)?width * (158/300):width * (218/300),
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 46),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.white
                     ),
-                    child: Column(// descobrir pq está errado
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -63,7 +73,42 @@ class GameModePage extends StatelessWidget{
                               )
                             );
                           }
-                        )
+                        ),
+                        if (modo== 2)...[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Checkbox(
+                                value: freezePoint, 
+                                onChanged: (bool? valor){
+                                  context.read<GameModeState>().jogoComFreeze(valor!);
+                                }
+                              ),
+                              Text("Freeze Point", style: Theme.of(context).textTheme.bodySmall)
+                            ],
+                          ),
+                          RadioGroup<int>(
+                            groupValue: maxPoint,
+                            onChanged: (valor) => context.read<GameModeState>().escolherPontuacao(valor!),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children:  [
+                                Expanded(
+                                  child: ListTile(
+                                    title: Text('15 Pontos', style: Theme.of(context).textTheme.bodySmall,),
+                                    leading: Radio<int>(value: 15, activeColor: Theme.of(context).colorScheme.primary,),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: ListTile(
+                                    title: Text('21 Pontos', style: Theme.of(context).textTheme.bodySmall,),
+                                    leading: Radio<int>(value: 21, activeColor: Theme.of(context).colorScheme.primary),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ]
                       ],
                     ),
                   ),

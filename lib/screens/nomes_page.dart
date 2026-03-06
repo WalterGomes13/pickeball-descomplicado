@@ -17,6 +17,14 @@ class NomesPage extends StatelessWidget{
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context), 
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onPrimary,
+          )),
+      ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
