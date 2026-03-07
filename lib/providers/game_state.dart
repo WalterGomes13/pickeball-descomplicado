@@ -15,6 +15,7 @@ class GameState extends ChangeNotifier{
   Jogo? jogo;
   List<TimePosicionado> timesPosicionados = [];
   List<Jogada> jogadas = [];
+  String? informacaoJogo;
 
   GameState(this.categoryState, this.gameModeState, this.nomeState);
   
@@ -36,9 +37,9 @@ class GameState extends ChangeNotifier{
 
   void pontuar(Time timePontuador, Time outroTime){
     jogadas.add(Jogada(times: timesPosicionados.map((t)=>t.copy()).toList(), jogo: jogo!.copy()));
-    if(!jogo!.pontuarJogo(timePontuador, outroTime)){
-      //botar algo pra dizer que ganhou o jogo
-    };
+    if(jogo!.timeVencedor == null){
+      jogo!.pontuarJogo(timePontuador, outroTime);
+    }
     notifyListeners();
   }
 

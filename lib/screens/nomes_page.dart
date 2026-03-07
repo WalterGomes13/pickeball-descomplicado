@@ -34,15 +34,15 @@ class NomesPage extends StatelessWidget{
               ? FormSimples(formSimplesKey: formKey) 
               : FormDuplas(formDuplasKey: formKey),
             mainButton(
-              enabled: true, 
               texto: 'COMEÇAR', 
-              rota: '/jogo', 
               formFunction: () {
                 if(formKey.currentState!.validate()){
                   formKey.currentState!.save();
                   (categoriaJogo == 1)
                     ? context.read<NomeState>().setSimples()
                     : context.read<NomeState>().setDupla();
+                  
+                  Navigator.pushNamed(context, '/jogo');
                 }
               }
             )

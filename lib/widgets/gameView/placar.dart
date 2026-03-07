@@ -11,6 +11,11 @@ Widget placar({
 }) {
   final List<Time>? times = context.watch<GameState>().jogo?.times;
 
+  Color retornarCor(Time time){
+    if (time.getSituacao == SituacaoJogo.atacando) return Theme.of(context).colorScheme.onPrimary;
+    else return Theme.of(context).colorScheme.onSecondary;
+  }
+
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 16.0),
     decoration: BoxDecoration(
@@ -32,11 +37,11 @@ Widget placar({
                 child: Text('J1',style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Color(0xFF1900FF))),
               ),
               SizedBox(width: 16),
-              Text('${times[0].jogador1.jogador.nome?[0]}. ${times[0].jogador1.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSecondary)),
+              Text('${times[0].jogador1.jogador.nome?[0]}. ${times[0].jogador1.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: retornarCor(times[0]))),
               Expanded(child: 
                 Consumer<GameState>(
                   builder: (BuildContext context, gameState, _){
-                    return Text('${gameState.jogo?.times[0].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
+                    return Text('${gameState.jogo?.times[0].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: retornarCor(times[0])));
                   }
                 )
               )
@@ -80,15 +85,15 @@ Widget placar({
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${times[0].jogador1.jogador.nome?[0]}. ${times[0].jogador1.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSecondary)),
-                    Text('${times[0].jogador2?.jogador.nome?[0]}. ${times[0].jogador2?.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSecondary),)
+                    Text('${times[0].jogador1.jogador.nome?[0]}. ${times[0].jogador1.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: retornarCor(times[0]))),
+                    Text('${times[0].jogador2?.jogador.nome?[0]}. ${times[0].jogador2?.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: retornarCor(times[0])),)
                   ],
                 ),
               ),
               Expanded(child: 
                 Consumer<GameState>(
                   builder: (BuildContext context, gameState, _){
-                    return Text('${gameState.jogo?.times[0].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
+                    return Text('${gameState.jogo?.times[0].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: retornarCor(times[0])));
                   }
                 )
               )
@@ -106,11 +111,11 @@ Widget placar({
                 child: Text('J2',style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Color(0xFFFF0004))),
               ),
               SizedBox(width: 16),
-              Text('${times[1].jogador1.jogador.nome?[0]}. ${times[1].jogador1.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onPrimary),),
+              Text('${times[1].jogador1.jogador.nome?[0]}. ${times[1].jogador1.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: retornarCor(times[1]))),
               Expanded(child: 
                 Consumer<GameState>(
                   builder: (BuildContext context, gameState, _){
-                    return Text('${gameState.jogo?.times[1].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
+                    return Text('${gameState.jogo?.times[1].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: retornarCor(times[1])));
                   }
                 )
               )
@@ -154,15 +159,15 @@ Widget placar({
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${times[1].jogador1.jogador.nome?[0]}. ${times[1].jogador1.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onPrimary)),
-                    Text('${times[1].jogador2?.jogador.nome?[0]}. ${times[1].jogador2?.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onPrimary),)
+                    Text('${times[1].jogador1.jogador.nome?[0]}. ${times[1].jogador1.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: retornarCor(times[1]))),
+                    Text('${times[1].jogador2?.jogador.nome?[0]}. ${times[1].jogador2?.jogador.sobrenome}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: retornarCor(times[1])))
                   ],
                 ),
               ),
               Expanded(child: 
                 Consumer<GameState>(
                   builder: (BuildContext context, gameState, _){
-                    return Text('${gameState.jogo?.times[1].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: Theme.of(context).colorScheme.onSecondary));
+                    return Text('${gameState.jogo?.times[1].getPontuacao}', textAlign: TextAlign.right, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 32, color: retornarCor(times[1])));
                   }
                 )
               )

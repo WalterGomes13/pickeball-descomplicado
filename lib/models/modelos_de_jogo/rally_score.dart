@@ -15,6 +15,7 @@ class RallyScore extends Jogo{
     RallyScore rallyScore = RallyScore(categoriaJogo: categoriaJogo, jogadores: jogadores, maxPont: maxPont, freezePoint: freezePoint);
     rallyScore.times = times.map((t)=>t.copy()).toList();
     rallyScore.timeVencedor = timeVencedor?.copy();
+    rallyScore.informacaoJogo = informacaoJogo;
 
     return rallyScore;
   }
@@ -24,11 +25,19 @@ class RallyScore extends Jogo{
     if (timePontuador.getPontuacao < maxPont){return false;}
     if (timePontuador.getPontuacao - outroTime.getPontuacao >=2){
       if (freezePoint!){
-        bool situacaoJogo = (timePontuador.getSituacao == SituacaoJogo.atacando)? true : false;
-        if (situacaoJogo) timeVencedor = timePontuador;
+        bool situacaoJogo = timePontuador.getSituacao == SituacaoJogo.atacando;
+        if (situacaoJogo) {
+          timeVencedor = timePontuador;
+          informacaoJogo = (timePontuador.isDupla)
+            ? "Acabou! ${timeVencedor!.jogador1.jogador.nome} e ${timeVencedor!.jogador2!.jogador.nome} vencem!"
+            : "Acabou! ${timeVencedor!.jogador1.jogador.nome} vence!";
+        }
         return situacaoJogo;
       } else {
         timeVencedor = timePontuador;
+        informacaoJogo = (timePontuador.isDupla)
+          ? "Acabou! ${timeVencedor!.jogador1.jogador.nome} e ${timeVencedor!.jogador2!.jogador.nome} vencem!"
+          : "Acabou! ${timeVencedor!.jogador1.jogador.nome} vence!";
         return true;
       }
     } else {
@@ -59,29 +68,35 @@ class RallyScore extends Jogo{
       novoTimeSacador.jogador2?.setEstado(estadosNovoSacador[1]);
       antigoTimeSacador.jogador1.setEstado(estadosAntigoSacador[0]);
       antigoTimeSacador.jogador2?.setEstado(estadosAntigoSacador[1]);
+      informacaoJogo = "Tomada de saque! Agora ${novoTimeSacador.jogador1.jogador.nome} e ${novoTimeSacador.jogador2!.jogador.nome} estão atacando";
     } else {
       novoTimeSacador.jogador1.definirJogador(ladoSacador, EstadoJogador.sacador);
       antigoTimeSacador.jogador1.definirJogador(ladoSacador, EstadoJogador.recebedor);
+      informacaoJogo = "Tomada de saque! Agora ${novoTimeSacador.jogador1.jogador.nome} está sacando";
     }
   }
 
   @override
   bool pontuarJogo(Time timePontuador, Time outroTime){
-    timePontuador.incrementarPontuacao();
     if (existeVencedor(timePontuador, outroTime)){return false;}
+    timePontuador.incrementarPontuacao();
     if(timePontuador.isDupla){
       if(timePontuador.getSituacao == SituacaoJogo.atacando){
         trocarLadoSaque(timePontuador);
         mudarRecebedor(outroTime);
+        informacaoJogo = "Ponto para ${timePontuador.jogador1.jogador.nome} e ${timePontuador.jogador2!.jogador.nome}!";
       } else {
         tomadaDeSaque(timePontuador, outroTime);
+        informacaoJogo = "Ponto e tomada de saque para ${timePontuador.jogador1.jogador.nome} e ${timePontuador.jogador2!.jogador.nome}!";
       }
     } else {
       if (timePontuador.getSituacao == SituacaoJogo.atacando){
         trocarLadoSaque(timePontuador);
         trocarLadoDefesa(outroTime);
+        informacaoJogo = "Ponto para ${timePontuador.jogador1.jogador.nome}!";
       } else {
         tomadaDeSaque(timePontuador, outroTime);
+        informacaoJogo = "Ponto e tomada de saque para ${timePontuador.jogador1.jogador.nome}";
       }
     }
 

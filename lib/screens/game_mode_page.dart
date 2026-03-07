@@ -64,7 +64,7 @@ class GameModePage extends StatelessWidget{
                                 },
                                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                                 selectedColor: Colors.white,
-                                selectedBorderColor: Color(0xFF31609D),
+                                selectedBorderColor: Colors.transparent,
                                 fillColor: Color(0xFF31609D),
                                 color: Color(0xFF7D7373),
                                 constraints: BoxConstraints(minHeight: width * (45.0/270.0), minWidth: (width - 3) / 2),
@@ -78,6 +78,7 @@ class GameModePage extends StatelessWidget{
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              SizedBox(width: 11),
                               Checkbox(
                                 value: freezePoint, 
                                 onChanged: (bool? valor){
@@ -95,13 +96,13 @@ class GameModePage extends StatelessWidget{
                               children:  [
                                 Expanded(
                                   child: ListTile(
-                                    title: Text('15 Pontos', style: Theme.of(context).textTheme.bodySmall,),
+                                    title: Text('até 15 pontos', style: Theme.of(context).textTheme.bodySmall,),
                                     leading: Radio<int>(value: 15, activeColor: Theme.of(context).colorScheme.primary,),
                                   ),
                                 ),
                                 Expanded(
                                   child: ListTile(
-                                    title: Text('21 Pontos', style: Theme.of(context).textTheme.bodySmall,),
+                                    title: Text('até 21 pontos', style: Theme.of(context).textTheme.bodySmall,),
                                     leading: Radio<int>(value: 21, activeColor: Theme.of(context).colorScheme.primary),
                                   ),
                                 ),
@@ -115,10 +116,11 @@ class GameModePage extends StatelessWidget{
                 );
               }
             ),
-            mainButton(enabled: true, 
+            mainButton(
               texto: 'PRÓXIMO', 
-              rota: '/nomes', 
-              formFunction: null,
+              formFunction: () {
+                Navigator.pushNamed(context, '/nomes');
+              },
             )
           ],
         ),

@@ -33,6 +33,7 @@ abstract class Jogo{
   int maxPont;
   List<Time> times = [];
   Time? timeVencedor;
+  String? informacaoJogo;
 
   Jogo copy();
 
@@ -61,6 +62,7 @@ abstract class Jogo{
       times[0].setSituacao(SituacaoJogo.atacando);
       times[1].setSituacao(SituacaoJogo.defendendo);
     }
+    informacaoJogo = "Inicia o jogo. Saque de ${times[0].jogador1.jogador.nome}";
   }
 
   bool existeVencedor(Time timePontuador, Time outroTime);
@@ -94,6 +96,9 @@ abstract class Jogo{
     EstadoJogador? estadoJogador1 = time.jogador1.getEstadoJogador;
     time.jogador1.setEstado(time.jogador2?.getEstadoJogador);
     time.jogador2?.setEstado(estadoJogador1);
+    informacaoJogo = (estadoJogador1 == EstadoJogador.sacador)
+      ? "Mudança de saque! Agora ${time.jogador2!.jogador.nome} saca!"
+      : "Mudança de saque! Agora ${time.jogador1.jogador.nome} saca!";
   }
 
   void mudarRecebedor(Time time){ // quando a equipe recebedora perde um ponto

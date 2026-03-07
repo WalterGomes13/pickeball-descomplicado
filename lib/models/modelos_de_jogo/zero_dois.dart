@@ -12,6 +12,7 @@ class ZeroDois extends Jogo{
     ZeroDois zeroDois = ZeroDois(categoriaJogo: categoriaJogo, jogadores: jogadores, maxPont: maxPont);
     zeroDois.times = times.map((t)=>t.copy()).toList();
     zeroDois.timeVencedor = timeVencedor?.copy();
+    zeroDois.informacaoJogo = informacaoJogo;
 
     return zeroDois;
   }
@@ -21,6 +22,9 @@ class ZeroDois extends Jogo{
     if (timePontuador.getPontuacao < maxPont){return false;}
     if (timePontuador.getPontuacao - outroTime.getPontuacao >=2){
       timeVencedor = timePontuador;
+      informacaoJogo = (timePontuador.isDupla)
+      ? "Acabou! ${timePontuador.jogador1.jogador.nome} e ${timePontuador.jogador2!.jogador.nome} vencem!"
+      : "Acabou! ${timePontuador.jogador1.jogador.nome} vence!";
       return true;
     } else {
       maxPont+=1;
@@ -46,10 +50,12 @@ class ZeroDois extends Jogo{
       novoTimeSacador.jogador2?.setEstado(estadosNovoSacador[1]);
       antigoTimeSacador.jogador1.setEstado(estadosAntigoSacador[0]);
       antigoTimeSacador.jogador2?.setEstado(estadosAntigoSacador[1]);
+      informacaoJogo = "Tomada de saque! Agora ${novoTimeSacador.jogador1.jogador.nome} e ${novoTimeSacador.jogador2!.jogador.nome} estão atacando";
     } else {
       LadoQuadra novoLadoQuadra = (novoTimeSacador.getPontuacao % 2 == 0)? LadoQuadra.direito : LadoQuadra.esquerdo;
       novoTimeSacador.jogador1.definirJogador(novoLadoQuadra, EstadoJogador.sacador);
       antigoTimeSacador.jogador1.definirJogador(novoLadoQuadra, EstadoJogador.recebedor);
+      informacaoJogo = "Tomada de saque! Agora ${novoTimeSacador.jogador1.jogador.nome} está sacando";
     }
   }
 
@@ -61,6 +67,7 @@ class ZeroDois extends Jogo{
         if (existeVencedor(timePontuador, outroTime)){return false;}
         trocarLadoSaque(timePontuador);
         mudarRecebedor(outroTime);
+        informacaoJogo = "Ponto para ${timePontuador.jogador1.jogador.nome} e ${timePontuador.jogador2!.jogador.nome}!";
       } else {
         if(outroTime.getNSacador == 1){
           mudarSacador(outroTime);
@@ -77,6 +84,7 @@ class ZeroDois extends Jogo{
         if (existeVencedor(timePontuador, outroTime)){return false;}
         trocarLadoSaque(timePontuador);
         trocarLadoDefesa(outroTime);
+        informacaoJogo = "Ponto para ${timePontuador.jogador1.jogador.nome}!";
       } else {
         tomadaDeSaque(timePontuador, outroTime);
       }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pickleball_descomp_flutter/models/jogador.dart';
 import 'jogador_form.dart';
 
 import 'package:pickleball_descomp_flutter/providers/nome_state.dart';
+
+import 'package:pickleball_descomp_flutter/models/jogador.dart';
 
 class FormSimples extends StatefulWidget{
   const FormSimples({super.key, required this.formSimplesKey});
@@ -36,29 +37,32 @@ class _FormSimplesState extends State<FormSimples>{
             ),
             child: Form(
               key: widget.formSimplesKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  jogadorForm(
-                    context: context, 
-                    titulo: 'Jogador 1', 
-                    GeneroSelecionado: GeneroJ1, 
-                    onGeneroChanged: (value) => context.read<NomeState>().setGeneroJ1(value), 
-                    onNomeSaved: (value) => context.read<NomeState>().setNomeJ1(value), 
-                    onSobrenomeSaved: (value) => context.read<NomeState>().setSobrenomeJ1(value)
-                  ),
-                  SizedBox(height: 15),
-                  jogadorForm(
-                    context: context, 
-                    titulo: 'Jogador 2', 
-                    GeneroSelecionado: GeneroJ2, 
-                    onGeneroChanged: (value) => context.read<NomeState>().setGeneroJ2(value), 
-                    onNomeSaved: (value) => context.read<NomeState>().setNomeJ2(value), 
-                    onSobrenomeSaved: (value) => context.read<NomeState>().setSobrenomeJ2(value)
-                  )
-                ],
-              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    jogadorForm(
+                      context: context, 
+                      titulo: 'Jogador 1', 
+                      GeneroSelecionado: GeneroJ1, 
+                      onGeneroChanged: (value) => context.read<NomeState>().setGeneroJ1(value), 
+                      onNomeSaved: (value) => context.read<NomeState>().setNomeJ1(value), 
+                      onSobrenomeSaved: (value) => context.read<NomeState>().setSobrenomeJ1(value)
+                    ),
+                    SizedBox(height: 15),
+                    jogadorForm(
+                      context: context, 
+                      titulo: 'Jogador 2', 
+                      GeneroSelecionado: GeneroJ2, 
+                      onGeneroChanged: (value) => context.read<NomeState>().setGeneroJ2(value), 
+                      onNomeSaved: (value) => context.read<NomeState>().setNomeJ2(value), 
+                      onSobrenomeSaved: (value) => context.read<NomeState>().setSobrenomeJ2(value)
+                    )
+                  ],
+                ),
+              )
             )
           ),
         );

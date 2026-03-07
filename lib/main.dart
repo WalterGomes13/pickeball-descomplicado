@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget{
               fontFamily: 'Afacad',
               fontWeight: FontWeight.bold,
             ),
-            minimumSize: const Size(235, 37),
+            minimumSize: const Size(267, 48),
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40),

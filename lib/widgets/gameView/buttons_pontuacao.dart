@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pickleball_descomp_flutter/widgets/gameView/modal_vencedor.dart';
 import 'package:provider/provider.dart';
 
 import 'package:pickleball_descomp_flutter/models/jogo.dart';
@@ -9,7 +10,8 @@ Widget buttonsPontuacao({
   required BuildContext context,
   required double width
 }) {
-  final List<Time>? times = context.read<GameState>().jogo?.times;
+  final Jogo jogo = context.watch<GameState>().jogo!;
+  final List<Time> times = jogo.times;
 
   return Container(
     decoration: BoxDecoration(
@@ -35,8 +37,11 @@ Widget buttonsPontuacao({
             ),
             onPressed: () {
               context.read<GameState>().pontuar(times[0], times[1]);
+              if (jogo.timeVencedor != null){
+                mostrarVencedor(context, width, jogo.timeVencedor!);
+              } 
             }, 
-            child: Text((times![0].isDupla)? 'Pontuar ${times[0].jogador1.jogador.nome} / ${times[0].jogador2?.jogador.nome}' : 'Pontuar ${times[0].jogador1.jogador.nome}')
+            child: Text((times[0].isDupla)? 'Pontuar ${times[0].jogador1.jogador.nome} / ${times[0].jogador2?.jogador.nome}' : 'Pontuar ${times[0].jogador1.jogador.nome}')
           ),
           FilledButton(
             style: FilledButton.styleFrom(
@@ -49,6 +54,9 @@ Widget buttonsPontuacao({
             ),
             onPressed: () {
               context.read<GameState>().pontuar(times[1], times[0]);
+              if (jogo.timeVencedor != null){
+                mostrarVencedor(context, width, jogo.timeVencedor!);
+              } 
             }, 
             child: Text((times[1].isDupla)? 'Pontuar ${times[1].jogador1.jogador.nome} / ${times[1].jogador2?.jogador.nome}' : 'Pontuar ${times[1].jogador1.jogador.nome}')
           )

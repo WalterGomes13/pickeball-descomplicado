@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:pickleball_descomp_flutter/widgets/gameView/placar.dart';
+import 'package:pickleball_descomp_flutter/widgets/gameView/barra_informacoes.dart';
 import 'package:pickleball_descomp_flutter/widgets/gameView/quadra.dart';
 import 'package:pickleball_descomp_flutter/widgets/gameView/buttons_pontuacao.dart';
 import 'package:pickleball_descomp_flutter/widgets/gameView/buttons_action.dart';
@@ -37,9 +38,10 @@ class GamePage extends StatelessWidget{
                     spacing: 9,
                     children: [
                       placar(context: context, width: width),
+                      barraInformacoes(context: context, width: width),
                       quadra(context: context, width: width),
                       buttonsPontuacao(context: context, width: width),
-                      buttonsAction(context: context, width: width)
+                      buttonsAction(context: context, width: width),
                     ],
                   )
                 )

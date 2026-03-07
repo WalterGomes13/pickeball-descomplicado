@@ -25,7 +25,12 @@ class enterPage extends StatelessWidget{
                 );
               }
             ),
-            mainButton(enabled: true, texto: 'COMEÇAR', rota: '/categoria', formFunction: null)
+            mainButton(
+              texto: 'COMEÇAR', 
+              formFunction: (){
+                Navigator.pushNamed(context, '/categoria');
+              }
+            )
           ],
         )
       ) 

@@ -63,7 +63,7 @@ class CategoryPage extends StatelessWidget{
                                 },
                                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                                 selectedColor: Colors.white,
-                                selectedBorderColor: Color(0xFF31609D),
+                                selectedBorderColor: Colors.transparent,
                                 fillColor: Color(0xFF31609D),
                                 color: Color(0xFF7D7373),
                                 constraints: BoxConstraints(minHeight: width * (45.0/270.0), minWidth: (width - 3) / 2),
@@ -79,10 +79,11 @@ class CategoryPage extends StatelessWidget{
                 );
               }
             ),
-            mainButton(enabled: true, 
+            mainButton(
               texto: 'PRÓXIMO', 
-              rota: '/modoJogo', 
-              formFunction: null,
+              formFunction: () {
+                Navigator.pushNamed(context, '/modoJogo');
+              },
             )
           ],
         ),

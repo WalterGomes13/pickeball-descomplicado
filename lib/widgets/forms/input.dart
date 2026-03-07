@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class input extends StatelessWidget{
   const input({super.key,  required this.texto, required this.onSaved});
@@ -16,6 +17,9 @@ class input extends StatelessWidget{
           child: TextFormField(
             keyboardType: TextInputType.name,
             style: Theme.of(context).textTheme.bodySmall,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+            ],
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8),borderSide: BorderSide(color: Colors.white)),
               focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8),borderSide: BorderSide(color: Colors.white)),
